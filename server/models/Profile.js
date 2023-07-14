@@ -9,11 +9,11 @@ const profileSchema = new mongoose.Schema({
     },
     about: {
         type: String,
-        trim: ture,
+        trim: true,
     },
     contactNumber: {
         type: Number,
-        trim: ture,
+        trim: true,
     }
 });
 module.exports = mongoose.model("Profile", profileSchema);

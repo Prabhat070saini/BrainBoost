@@ -17,7 +17,7 @@ const otpSchema = new mongoose.Schema({
     },
     contactNumber: {
         type: Number,
-        trim: ture,
+        trim: true,
     }
 });
 
@@ -25,7 +25,7 @@ const otpSchema = new mongoose.Schema({
 const sendverficationmail = async (email, otp) => {
     try {
         const mailResponse = await mailSender(email, "verfication mail for signUp", otp);
-        console.log("email send succesfully:",mailResponse);
+        console.log("email send succesfully:", mailResponse);
     }
     catch (err) {
         console.log('error occured while seding email: ', err);
@@ -33,8 +33,8 @@ const sendverficationmail = async (email, otp) => {
     }
 
 }
-otpSchema.pre("save",async(next)=>{
-    await sendverficationmail(this.email,this.otp);
+otpSchema.pre("save", async (next) => {
+    await sendverficationmail(this.email, this.otp);
     next();
 
 })
