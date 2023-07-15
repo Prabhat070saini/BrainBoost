@@ -1,0 +1,13 @@
+/* write your css here */
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+.Homepage_bg {
+    background: url(../src/assets/Images/bghome.svg);
+}

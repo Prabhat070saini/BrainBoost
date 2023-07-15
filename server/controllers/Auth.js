@@ -174,13 +174,14 @@ exports.login = async (req, res,) => {
             });
         }
         // check password and create jwt token
+        console.log(`under user: ${user.accountType}`)
         if (await bycrpt.compare(password, user.password)) {
             const payload = {
                 email: user.email,
                 id: user._id,
                 accountType: user.accountType,
             }
-            const token = await jwt.sign(payload, process.env.JWT_SECRET, {
+            const token = jwt.sign(payload, process.env.JWT_SECRET, {
                 expiresIn: "2h",
             });
             user.token = token;

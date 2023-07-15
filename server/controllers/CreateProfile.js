@@ -1,12 +1,14 @@
 const User = require("../models/User");
 const Profile = require("../models/Profile");
-
+const { ImageUploadCouldinary } = require("../utils/ImageUploader");
 
 exports.UpdateProfile = async (req, res) => {
     try {
         const { dateofbirth = "", about = "", constactNumber, gender } = req.body;
         const id = req.user.id;
-        if (!dateofbirth || !about || !gender || id) {
+        if (!dateofbirth || !about || !gender || !id) {
+            console.log(dateofbirth, about, gender);
+            console.log(id)
             return res.status(404).json({
                 success: false,
                 message: "All fields are required",
@@ -45,6 +47,8 @@ exports.deleteAccount = async (req, res) => {
         // 	console.log("The answer to life, the universe, and everything!");
         // });
         // console.log(job);
+
+
         const id = req.user.id;
         const user = await User.findById({ _id: id });
         if (!user) {
@@ -54,10 +58,12 @@ exports.deleteAccount = async (req, res) => {
             });
         }
         // Delete Assosiated Profile with the User
-        await Profile.findByIdAndDelete({ _id: user.userDetails });
+
+        console.log("The answer to life, the universe, and everything!", user.additionalDetails);
+        await Profile.findByIdAndDelete({ _id: user.additionalDetails });
         // TODO: Unenroll User From All the Enrolled Courses
         // Now Delete User
-        await user.findByIdAndDelete({ _id: id });
+        await User.findByIdAndDelete({ _id: id });
         res.status(200).json({
             success: true,
             message: "User deleted successfully",
@@ -94,7 +100,8 @@ exports.updateDisplayPicture = async (req, res) => {
     try {
         const displayPicture = req.files.displayPicture
         const userId = req.user.id
-        const image = await uploadImageToCloudinary(
+        // console.log(`afs`)
+        const image = await ImageUploadCouldinary(
             displayPicture,
             process.env.FOLDER_NAME,
             1000,
@@ -112,7 +119,9 @@ exports.updateDisplayPicture = async (req, res) => {
             data: updatedProfile,
         })
     } catch (error) {
+        console.log("under catch in updatedisplaypicture")
         return res.status(500).json({
+
             success: false,
             message: error.message,
         })

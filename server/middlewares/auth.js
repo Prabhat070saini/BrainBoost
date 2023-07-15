@@ -22,6 +22,7 @@ exports.auth = async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             console.log(decoded);
             req.user = decoded;
+            console.log(`under authmidd: ${req.user.accountType}`)
         }
         catch (err) {
             console.log("while verifiy token " + err);
@@ -48,7 +49,9 @@ exports.auth = async (req, res, next) => {
 
 exports.isStudent = async (req, res, next) => {
     try {
-        if (req.body.accountType !== "Student") {
+        // const { accountType } = req.body;
+        // console.log(accountType)
+        if (req.user.accountType !== "Student") {
             return res.status(401).json({
                 success: false,
                 message: "You must be a student",
@@ -66,7 +69,7 @@ exports.isStudent = async (req, res, next) => {
 }
 exports.isInstructor = async (req, res, next) => {
     try {
-        if (req.body.accountType !== "Instructor") {
+        if (req.user.accountType !== "Instructor") {
             return res.status(401).json({
                 success: false,
                 message: "You must be a Instructor",
@@ -85,7 +88,8 @@ exports.isInstructor = async (req, res, next) => {
 
 exports.isAdmin = async (req, res, next) => {
     try {
-        if (req.body.accountType !== "Admin") {
+
+        if (req.user.accountType !== "Admin") {
             return res.status(401).json({
                 success: false,
                 message: "You must be a Admin",

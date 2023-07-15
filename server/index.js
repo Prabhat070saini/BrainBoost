@@ -39,9 +39,9 @@ app.use(
 cloudinaryConnect();
 
 app.use("/api/v1/auth", userRouter);
-app.use("api/v1/profile", profileRouter);
-app.use("api/v1/payment", paymentRouter);
-app.use("api/v1/course", courseRouter);
+app.use("/api/v1/profile", profileRouter);
+app.use("/api/v1/payment", paymentRouter);
+app.use("/api/v1/course", courseRouter);
 
 
 app.get("/", (req, res) => {

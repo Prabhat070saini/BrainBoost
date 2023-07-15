@@ -4,36 +4,52 @@ const Course = require("../models/Crouse");
 
 exports.CreateSection = async (req, res) => {
     try {
+        // Extract the required properties from the request body
         const { sectionName, courseId } = req.body;
 
+        // Validate the input
         if (!sectionName || !courseId) {
             return res.status(400).json({
-                success: flase,
-                message: "All fields are required",
+                success: false,
+                message: "Missing required properties",
             });
         }
+
+        // Create a new section with the given name
         const newSection = await Section.create({ sectionName });
-        const upDateCourse = await Course.findByIdAndUpdate(
+
+
+        // Add the new section to the course's content array
+        const updatedCourse = await Course.findByIdAndUpdate(
             courseId,
             {
-
-                $push: { CourseContent: newSection._id, }
-
+                $push: {
+                    CourseContent: newSection._id,
+                },
             },
-            { new: true },
-
+            { new: true }
         )
-        return res.status(200).json({
+            .populate({
+                path: "CourseContent",
+                populate: {
+                    path: "subsection",
+                },
+            })
+            .exec();
+        console.log(`newsection k bad`)
+
+        // Return the updated course object in the response
+        res.status(200).json({
             success: true,
-            message: 'Section create successfully',
-            upDateCourse,
+            message: "Section created successfully",
+            updatedCourse,
         });
-    }
-    catch (err) {
-        console.error(err);
-        return res.status(500).json({
+    } catch (error) {
+        // Handle errors
+        res.status(500).json({
             success: false,
-            message: `Unable to Create Section: ${err.message}`,
+            message: "Internal server error",
+            error: error.message,
         });
     }
 };
@@ -51,7 +67,7 @@ exports.updateSection = async (req, res) => {
             });
         }
 
-        const section = await Section.findByIdAndUpdate(sectionId, { sectionName }, { new: true },);
+        const section = await Section.findByIdAndUpdate(sectionId, { sectionName }, { new: true });
         return res.status(200).json({
             success: true,
             message: 'Section updated successfully',
