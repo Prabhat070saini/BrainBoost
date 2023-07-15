@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const mailSender = require('../utils/MainSender');
-
+const emailTemplate = require("../mail/templates/EmailverificationTemplate");
 const otpSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -15,27 +15,41 @@ const otpSchema = new mongoose.Schema({
         default: Date.now(),
         expires: 5 * 60,
     },
-    contactNumber: {
-        type: Number,
-        trim: true,
-    }
+
 });
 
 // a function -> send mail
-const sendverficationmail = async (email, otp) => {
+async function sendVerificationEmail(email, otp) {
+
+    // console.log(`inSIDE OTPMODEL email: ${email}, otp: ${otp}`)
     try {
-        const mailResponse = await mailSender(email, "verfication mail for signUp", otp);
-        console.log("email send succesfully:", mailResponse);
+        // console.log("prbha")
+        const mailResponse = await mailSender(
+            email,
+            "Verification Email",
+            emailTemplate(otp),
+        );
+        // console.log("Email sent successfully: ", mailResponse);
     }
     catch (err) {
-        console.log('error occured while seding email: ', err);
-        throw err;
+        console.log('error occured while sending email: ', err.message);
+        // throw err;
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        });
     }
 
 }
-otpSchema.pre("save", async (next) => {
-    await sendverficationmail(this.email, this.otp);
-    next();
+// Define a post-save hook to send email after the document has been saved
+otpSchema.pre("save", async function (next) {
+    console.log("New document saved to database");
 
-})
+    // Only send an email when a new document is created
+    if (this.isNew) {
+        await sendVerificationEmail(this.email, this.otp);
+        console.log("under if New document saved to database");
+    }
+    next();
+});
 module.exports = mongoose.model("Otp", otpSchema);

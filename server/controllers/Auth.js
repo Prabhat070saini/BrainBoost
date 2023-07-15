@@ -24,35 +24,37 @@ exports.sendOtp = async (req, res) => {
         }
         // Genrate Otp 
         let otp = Otp_genrator.generate(6, {
-            specialChars: false,
             upperCaseAlphabets: false,
             lowerCaseAlphabets: false,
+            specialChars: false,
         });
-        console.log(`Genrated otp-> ${otp}`);
+
         // check unique otp or not
         const result = await OTP.findOne({ otp: otp });
         while (result) {
             otp = Otp_genrator.generate(6, {
-                specialChars: false,
                 upperCaseAlphabets: false,
-                lowerCaseAlphabets: false,
             });
-            // console.log(`Genrated otp-> ${otp}`);
-            // check unique otp or not
-            result = await OTP.findOne({ otp: otp });
         }
+        // console.log(`Genrated otp-> ${otp}`);
+        // check unique otp or not
+
+        console.log(`Genrated otp-> ${otp}`);
+        // console.log(`inSIDE auth sendopt email: ${email}, otp: ${otp}`)
         const otp_payload = { email, otp };
 
-
+        console.log(`after otppalyload`);
         // create an entity in the database
         const otpbody = await OTP.create(otp_payload);
-        console.log(otpbody);
+        console.log(`after create otp`);
+        // console.log(otpbody);
 
 
         //  retrun response
         return res.status(200).json({
             success: true,
             message: 'otp send successfully',
+            otp,
         });
     }
     catch (error) {
@@ -74,7 +76,9 @@ exports.signUp = async (req, res) => {
         const { firstName, lastName, email, password, confirmedPassword, contactNumber, otp, accountType } = req.body;
 
         // validate email and password
+
         if (!email || !password || !confirmedPassword || !otp || !firstName || !lastName) {
+            console.log(firstName, lastName, email, password, confirmedPassword, otp, accountType);
             return res.status(403).json({
                 success: false,
                 message: 'All fields are required',
@@ -108,7 +112,7 @@ exports.signUp = async (req, res) => {
             });
 
         }
-        else if (recentotp !== otp) {
+        else if (recentotp[0].otp !== otp) {
             return res.status(404).json({
                 success: false,
                 message: "invalid otp",
