@@ -2,11 +2,14 @@ import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import React from "react";
 import HighlightedText from "../components/core/Homepages/HighlightedText";
-import { LearningLanguageSection } from "../components/core/Homepages/LearningLanguageSection";
-import { TimelineSection } from "../components/core/Homepages/TimelineSection";
+import LearningLanguageSection from "../components/core/Homepages/LearningLanguageSection";
+import TimelineSection from "../components/core/Homepages/TimelineSection";
 import CTAButton from "../components/core/Homepages/CTAButton";
 import Banner from "../assets/Images/banner.mp4";
 import CodeBlocks from "../components/core/Homepages/CodeBlocks";
+import InstructorSection from "../components/core/Homepages/InstructorSection";
+import Footer from "../components/common/Footer";
+import ExploreMore from "../components/core/Homepages/ExploreMore";
 export default function Home() {
   return (
     <div>
@@ -111,6 +114,8 @@ export default function Home() {
             }
           />
         </div>
+        {/* Explore Section */}
+        <ExploreMore />
       </div>
       {/* section 2 */}
       <div className="bg-pure-greys-5 text-richblack-700">
@@ -156,15 +161,22 @@ export default function Home() {
           </div>
 
           {/* Timeline Section - Section 2 */}
-          {/* <TimelineSection /> */}
+          <TimelineSection />
 
           {/* Learning Language Section - Section 3 */}
-          {/* <LearningLanguageSection /> */}
+          <LearningLanguageSection />
         </div>
       </div>
-
-      {/* section 1 */}
-      {/* section 1 */}
+      {/* section 3 */}
+      <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
+        <InstructorSection />
+        <h1 className="text-center text-4xl font-semibold mt-8">
+          Reviews from other learners
+        </h1>
+        {/* <ReviewSlider /> */}
+      </div>
+      {/* section 4*/}
+      <Footer />
     </div>
   );
 }

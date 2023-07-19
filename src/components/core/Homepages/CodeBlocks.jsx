@@ -1,6 +1,6 @@
 import React from "react";
 import CTAButton from "./CTAButton";
-import HighlightedText from "./HighlightedText";
+
 import { FaArrowRight } from "react-icons/fa";
 import { TypeAnimation } from "react-type-animation";
 export default function CodeBlocks({

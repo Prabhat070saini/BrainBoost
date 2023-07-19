@@ -1,26 +1,26 @@
 const nodemailer = require("nodemailer");
-
+require("dotenv").config();
 const mailSender = async (email, title, body) => {
     try {
         let transporter = nodemailer.createTransport({
-            services: `gmail`,
+            service: 'gmail',
             auth: {
-                user: process.env.MAIL_USER,
-                pass: process.env.MAIL_PASS,
+                user: process.env.Mail_user,
+                pass: process.env.Mail_password,
             },
-            port: 465,
-            host: process.env.MAIL_HOST,
-        })
+            // port: 465,
+            // host: process.env.MAIL_HOST,
+        });
 
 
         let info = await transporter.sendMail({
-            from: `prabhat07saini@gmail.com`,
-            to: `amansaini@gmail.com`,
-            subject: `verfiemail`,
-            // html: `<h1>65364</h1>`,
-            text: `testing`
+            from: `BrainBoost Team`,
+            to: `${email}`,
+            subject: `${title}`,
+            html: `${body}`,
+            // text: `testing`
         });
-        console.log(info);
+        // console.log(info);
         return info;
     }
     catch (error) {

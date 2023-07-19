@@ -39,14 +39,14 @@ exports.sendOtp = async (req, res) => {
         // console.log(`Genrated otp-> ${otp}`);
         // check unique otp or not
 
-        console.log(`Genrated otp-> ${otp}`);
+        // console.log(`Genrated otp-> ${otp}`);
         // console.log(`inSIDE auth sendopt email: ${email}, otp: ${otp}`)
         const otp_payload = { email, otp };
 
-        console.log(`after otppalyload`);
+        // console.log(`after otppalyload`);
         // create an entity in the database
         const otpbody = await OTP.create(otp_payload);
-        console.log(`after create otp`);
+        // console.log(`after create otp`);
         // console.log(otpbody);
 
 
@@ -73,18 +73,18 @@ exports.signUp = async (req, res) => {
 
     try {
         //    fetch data from the req body
-        const { firstName, lastName, email, password, confirmedPassword, contactNumber, otp, accountType } = req.body;
+        const { firstName, lastName, email, password, confirmPassword, contactNumber, otp, accountType } = req.body;
 
         // validate email and password
 
-        if (!email || !password || !confirmedPassword || !otp || !firstName || !lastName) {
-            console.log(firstName, lastName, email, password, confirmedPassword, otp, accountType);
+        if (!email || !password || !confirmPassword || !otp || !firstName || !lastName) {
+            console.log(firstName, lastName, email, password, confirmPassword, otp, accountType);
             return res.status(403).json({
                 success: false,
                 message: 'All fields are required',
             });
         }
-        if (password !== confirmedPassword) {
+        if (password !== confirmPassword) {
             return res.status(400).json({
                 success: false,
                 message: 'Passwords do not match with confirmed password',
@@ -138,6 +138,7 @@ exports.signUp = async (req, res) => {
             additionalDetails: profileDtails._id,
             image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
         });
+        console.log(user);
         return res.status(200).json({
             success: true,
             message: `Account Successfully created`,
@@ -182,13 +183,15 @@ exports.login = async (req, res,) => {
                 accountType: user.accountType,
             }
             const token = jwt.sign(payload, process.env.JWT_SECRET, {
-                expiresIn: "2h",
+                expiresIn: '2h',
+                //  "2h",
             });
             user.token = token;
             user.password = undefined;
             // Genrate cookie
             const option = {
-                expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+                expires: new Date(Date.now() + 2 * 60),
+                // 3*24*60*60*1000
                 httpOnly: true,
             }
             res.cookie("token", token, option).status(200).json({
