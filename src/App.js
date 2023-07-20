@@ -1,7 +1,10 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+
+import { ACCOUNT_TYPE } from "./utils/constansts";
 import Home from "./pages/Home";
 import Navbar from "./components/common/Navbar";
+import PrivateRoute from "./components/core/Auth/PrivateRoute";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login"
 import Error from "./pages/Error";
@@ -13,6 +16,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import MyProfile from "./components/core/Dashboard/MyProfile";
 import Dashboard from "./pages/Dashboard";
+import Settings from "./components/core/Dashboard/Settings";
 function App() {
   return (
     <div className="w-screen min-h-screen flex flex-col font-inter bg-richblack-900">
@@ -39,8 +43,16 @@ function App() {
             </OpenRoute>
           }
         />
-        <Route element={<Dashboard />} >
+
+        <Route
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        >
           <Route path="dashboard/my-profile" element={<MyProfile />} />
+          <Route path="dashboard/Settings" element={<Settings />} />
         </Route>
 
 

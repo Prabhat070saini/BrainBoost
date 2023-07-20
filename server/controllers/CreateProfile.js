@@ -4,11 +4,12 @@ const { ImageUploadCouldinary } = require("../utils/ImageUploader");
 
 exports.UpdateProfile = async (req, res) => {
     try {
-        const { dateofbirth = "", about = "", constactNumber, gender } = req.body;
+        const { dateOfBirth, about = "", constactNumber, gender } = req.body;
         const id = req.user.id;
         console.log("user id: " + id);
-        if (!dateofbirth || !about || !gender || !id) {
-            console.log(dateofbirth, about, gender);
+        console.log("date of birth: " + dateOfBirth)
+        if (!dateOfBirth || !about || !gender || !id) {
+            console.log(dateOfBirth, about, gender);
             console.log(id)
             return res.status(404).json({
                 success: false,
@@ -24,7 +25,7 @@ exports.UpdateProfile = async (req, res) => {
         profileDtails.contactNumber = constactNumber;
         profileDtails.gender = gender;
         profileDtails.about = about;
-        profileDtails.dob = dateofbirth;
+        profileDtails.dob = dateOfBirth;
         console.log(profileDtails);
         await profileDtails.save();
         return res.status(200).json({

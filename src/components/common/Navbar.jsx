@@ -50,7 +50,7 @@ export default function Navbar() {
           <img src={logo} alt="Logo" width={160} height={32} loading="lazy" />
         </Link>
         {/* Navigation links */}
-        <nav className="hidden md:block">
+        <nav className="flex tranlation md:block">
           <ul className="flex gap-x-6 text-richblack-25">
             {NavbarLinks.map((link, index) => {
               return (

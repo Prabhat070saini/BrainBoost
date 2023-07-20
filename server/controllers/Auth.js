@@ -5,6 +5,8 @@ const bycrpt = require("bcrypt");
 const Profile = require("../models/Profile");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const mailSender = require("../utils/MainSender");
+const passwordUpdated = require("../mail/templates/passwordUpdate")
 // Send otp login for signup
 exports.sendOtp = async (req, res) => {
 
@@ -239,7 +241,8 @@ exports.changePassword = async (req, res) => {
                 .json({ success: false, message: "The password is incorrect" });
         }
 
-        // Match new password and confirm new password
+        // Match new password and confirm new password\
+        console.log("confirm new password", confirmNewPassword);
         if (newPassword !== confirmNewPassword) {
             // If new password and confirm new password do not match, return a 400 (Bad Request) error
             return res.status(400).json({
@@ -260,6 +263,7 @@ exports.changePassword = async (req, res) => {
         try {
             const emailResponse = await mailSender(
                 updatedUserDetails.email,
+                "Update your Passwords",
                 passwordUpdated(
                     updatedUserDetails.email,
                     `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
