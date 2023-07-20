@@ -6,6 +6,7 @@ exports.UpdateProfile = async (req, res) => {
     try {
         const { dateofbirth = "", about = "", constactNumber, gender } = req.body;
         const id = req.user.id;
+        console.log("user id: " + id);
         if (!dateofbirth || !about || !gender || !id) {
             console.log(dateofbirth, about, gender);
             console.log(id)
@@ -16,12 +17,15 @@ exports.UpdateProfile = async (req, res) => {
         }
 
         const userDetails = await User.findById(id);
+        console.log(userDetails);
         const profileId = userDetails.additionalDetails;
+        console.log(`profileid $`);
         const profileDtails = await Profile.findById(profileId);
         profileDtails.contactNumber = constactNumber;
         profileDtails.gender = gender;
         profileDtails.about = about;
         profileDtails.dob = dateofbirth;
+        console.log(profileDtails);
         await profileDtails.save();
         return res.status(200).json({
             success: true,

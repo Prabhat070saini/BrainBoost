@@ -80,7 +80,7 @@ export default function Home() {
             codeColor={"text-pink-200"}
             codeblock={`<!DOCTYPE html>\n <html lang="en">\n<head>\n<title>This is myPage</title>\n</head>\n<body>\n<h1><a href="/">Header</a></h1>\n<nav> <a href="/one">One</a> <a href="/two">Two</a> <a href="/three">Three</a>\n</nav>\n</body>`}
             backgroundGradient={
-              <div className="codeblock1 absolute h-56 w-[20rem] blur-3xl opacity-[0.5]  rounded-full bg-[#172362] "></div>
+              <div className="codeblock1 absolute h-56 w-[20rem] blur-3xl opacity-[0.5]  rounded-full bg-[#fafafa] "></div>
             }
           />
         </div>
@@ -110,7 +110,7 @@ export default function Home() {
             codeColor={"text-blue-100"}
             codeblock={`import React from "react";\n import CTAButton from "./Button";\nimport TypeAnimation from "react-type";\nimport { FaArrowRight } from "react-icons/fa";\n\nconst Home = () => {\nreturn (\n<div>Home</div>\n)\n}\nexport default Home;`}
             backgroundGradient={
-              <div className="codeblock1 absolute h-56 w-[20rem] blur-3xl opacity-[0.5]  rounded-full bg-[#79470f] "></div>
+              <div className="codeblock1 absolute h-60 w-[20rem] ml-6 blur-2xl opacity-[0.5]  rounded-full bg-[#0d662a7c] "></div>
             }
           />
         </div>

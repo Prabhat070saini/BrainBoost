@@ -157,7 +157,7 @@ exports.signUp = async (req, res) => {
 
 // Login 
 
-exports.login = async (req, res,) => {
+exports.login = async (req, res) => {
     try {
         //  fetch data from req
         const { email, password } = req.body;
@@ -167,7 +167,7 @@ exports.login = async (req, res,) => {
                 message: 'All fields are required',
             })
         }
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).populate("additionalDetails").exec();;
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -189,16 +189,16 @@ exports.login = async (req, res,) => {
             user.token = token;
             user.password = undefined;
             // Genrate cookie
-            const option = {
-                expires: new Date(Date.now() + 2 * 60),
-                // 3*24*60*60*1000
+            const options = {
+                expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
                 httpOnly: true,
             }
-            res.cookie("token", token, option).status(200).json({
+
+            res.cookie("token", token, options).status(200).json({
                 success: true,
                 token,
                 user,
-                message: `Logged in successfully`,
+                message: `User Login Success`,
             })
         }
         else {
