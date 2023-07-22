@@ -25,7 +25,7 @@ const courseSchema = new mongoose.Schema({
     }],
     ratingAndReview: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "ratingAndReview",
+        ref: "RatingAndReview",
     }],
     price: {
         type: Number,
@@ -43,16 +43,21 @@ const courseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",
     },
-    studentEnroll: [{
+    studentsEnroled: [{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "User",
-    }], instructions: {
+    }],
+    instructions: {
         type: [String],
     },
     status: {
         type: String,
         enum: ["Draft", "Published"],
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
 
 });

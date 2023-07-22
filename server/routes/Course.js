@@ -6,9 +6,13 @@ const router = express.Router()
 
 // Course Controllers Import
 const {
+    getFullCourseDetails,
+    getInstructorCourses,
+    deleteCourse,
     CreateCourse,
     getAllCourses,
     getCourseDetails,
+    editCourse
 } = require("../controllers/CreateCourse")
 
 
@@ -39,7 +43,7 @@ const {
     getAverageRating,
     getAllRating,
 } = require("../controllers/RatingAndReview")
-
+const { updateCourseProgress } = require("../controllers/courseProgress")
 // Importing Middlewares
 const { auth, isInstructor, isStudent, isAdmin } = require("../middlewares/auth")
 
@@ -65,7 +69,18 @@ router.post("/addSubSection", auth, isInstructor, createSubSection)
 router.get("/getAllCourses", getAllCourses)
 // Get Details for a Specific Courses
 router.post("/getCourseDetails", getCourseDetails)
+// Get all Courses Under a Specific Instructor
+router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
 
+// Delete a Course
+router.delete("/deleteCourse", deleteCourse)
+
+// Get Details for a Specific Courses
+router.post("/getFullCourseDetails", auth, getFullCourseDetails)
+
+router.post("/editCourse", auth, isInstructor, editCourse)
+
+router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)
 // ********************************************************************************************************

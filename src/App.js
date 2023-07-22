@@ -1,10 +1,12 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 import { ACCOUNT_TYPE } from "./utils/constansts";
 import Home from "./pages/Home";
 import Navbar from "./components/common/Navbar";
+import { useDispatch, useSelector } from "react-redux";
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
+import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login"
 import Error from "./pages/Error";
@@ -17,7 +19,14 @@ import Contact from "./pages/Contact";
 import MyProfile from "./components/core/Dashboard/MyProfile";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./components/core/Dashboard/Settings";
+import Cart from "./components/core/Dashboard/Cart";
+import MyCourses from "./components/core/Dashboard/MyCourses";
+import AddCourse from "./components/core/Dashboard/AddCourse";
+import EditCourse from "./components/core/Dashboard/EditCourse";
 function App() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.profile)
   return (
     <div className="w-screen min-h-screen flex flex-col font-inter bg-richblack-900">
       <Navbar></Navbar>
@@ -53,6 +62,26 @@ function App() {
         >
           <Route path="dashboard/my-profile" element={<MyProfile />} />
           <Route path="dashboard/Settings" element={<Settings />} />
+
+          {
+            user?.accountType === ACCOUNT_TYPE.STUDENT && (
+              <>
+                <Route path="dashboard/cart" element={<Cart />} />
+                <Route path="dashboard/enrolled-courses" element={<EnrolledCourses />} />
+              </>
+            )
+          }
+          {
+            user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+              <>
+                {/* <Route path="dashboard/instructor" element={<Instructor />} /> */}
+                <Route path="dashboard/add-course" element={<AddCourse />} />
+                <Route path="dashboard/my-courses" element={<MyCourses />} />
+                <Route path="dashboard/edit-course/:courseId" element={<EditCourse />} />
+
+              </>
+            )
+          }
         </Route>
 
 
