@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/Logo/Logo-Full-Light.png";
 import { NavbarLinks } from "../../data/navbar-links";
-import { Link, matchPath, useLocation } from "react-router-dom";
+import { Link, matchPath, useLocation, NavLink } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai";
 import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
 import ProfileDropdown from "../core/Auth/ProfileDropdown";
+import { ACCOUNT_TYPE } from "../../utils/constansts";
 export default function Navbar() {
   const location = useLocation();
   const { token } = useSelector((state) => state.auth);
@@ -93,7 +94,7 @@ export default function Navbar() {
                     </>
                   ) : (
                     <>
-                      <Link to={link?.path}>
+                      <NavLink to={link?.path}>
                         <p
                           className={`${
                             matchRoute(link?.path)
@@ -101,9 +102,9 @@ export default function Navbar() {
                               : "text-richblack-25"
                           }`}
                         >
-                          {link.title}
+                          {link?.title}
                         </p>
-                      </Link>
+                      </NavLink>
                     </>
                   )}
                 </li>
@@ -113,7 +114,7 @@ export default function Navbar() {
         </nav>
         {/* Login / Signup / Dashboard */}
         <div className="hidden items-center gap-x-4 md:flex">
-          {user && user?.accountType !== user.accountType && (
+          {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
               {totalItems > 0 && (

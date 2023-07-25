@@ -10,6 +10,7 @@ import CodeBlocks from "../components/core/Homepages/CodeBlocks";
 import InstructorSection from "../components/core/Homepages/InstructorSection";
 import Footer from "../components/common/Footer";
 import ExploreMore from "../components/core/Homepages/ExploreMore";
+import ReviewSlider from "../components/common/ReviewSlider";
 export default function Home() {
   return (
     <div>
@@ -173,7 +174,7 @@ export default function Home() {
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
-        {/* <ReviewSlider /> */}
+        <ReviewSlider />
       </div>
       {/* section 4*/}
       <Footer />

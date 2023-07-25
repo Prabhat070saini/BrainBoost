@@ -82,7 +82,7 @@ exports.CreateCourse = async (req, res) => {
             whatYouWillLearn: whatYouWillLearn,
             price,
             tag: tag,
-            category: categoryDetails._id,
+            Category: categoryDetails._id,
             thumbnail: thumbnailImage.secure_url,
             status: status,
             instructions: instructions,
@@ -163,51 +163,63 @@ exports.getAllCourses = async (req, res) => {
 //getCourseDetails
 exports.getCourseDetails = async (req, res) => {
     try {
-        //get id
-        const { courseId } = req.body;
-        //find course details
-        const courseDetails = await Course.find(
-            { _id: courseId })
-            .populate(
-                {
-                    path: "instructor",
-                    populate: {
-                        path: "additionalDetails",
-                    },
-                }
-            )
+        const { courseId } = req.body
+        const courseDetails = await Course.findOne({
+            _id: courseId,
+        })
+            .populate({
+                path: "instructor",
+                populate: {
+                    path: "additionalDetails",
+                },
+            })
             .populate("Category")
-            // .populate("ratingAndReview")
+            .populate("ratingAndReview")
             .populate({
                 path: "CourseContent",
                 populate: {
                     path: "subsection",
+                    select: "-videoUrl",
                 },
             })
-            .exec();
+            .exec()
 
-        //validation
         if (!courseDetails) {
             return res.status(400).json({
                 success: false,
-                message: `Could not find the course with ${courseId}`,
-            });
+                message: `Could not find course with id: ${courseId}`,
+            })
         }
-        console.log(courseDetails)
-        //return response
-        return res.status(200).json({
-            success: true,
-            message: "Course Details fetched successfully",
-            data: courseDetails,
+
+        // if (courseDetails.status === "Draft") {
+        //   return res.status(403).json({
+        //     success: false,
+        //     message: `Accessing a draft course is forbidden`,
+        //   });
+        // }
+
+        let totalDurationInSeconds = 0
+        courseDetails.CourseContent.forEach((content) => {
+            content.subsection.forEach((subSection) => {
+                const timeDurationInSeconds = parseInt(subSection.timeDuration)
+                totalDurationInSeconds += timeDurationInSeconds
+            })
         })
 
-    }
-    catch (error) {
-        console.log(error);
+        const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                courseDetails,
+                totalDuration,
+            },
+        })
+    } catch (error) {
         return res.status(500).json({
             success: false,
             message: error.message,
-        });
+        })
     }
 }
 

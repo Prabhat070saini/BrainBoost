@@ -48,10 +48,10 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
         console.log("PRINTING orderResponse", orderResponse);
         //options
         const options = {
-            key: process.env.RAZORPAY_KEY,
-            currency: orderResponse.data.message.currency,
-            amount: `${orderResponse.data.message.amount}`,
-            order_id: orderResponse.data.message.id,
+            key: "rzp_test_wXKbEjmQHUWbTq",
+            currency: orderResponse.data.data.currency,
+            amount: `${orderResponse.data.data.amount}`,
+            order_id: orderResponse.data.data.id,
             name: "StudyNotion",
             description: "Thank You for Purchasing the Course",
             image: rzpLogo,
@@ -61,17 +61,26 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
             },
             handler: function (response) {
                 //send successful wala mail
-                sendPaymentSuccessEmail(response, orderResponse.data.message.amount, token);
-                //verifyPayment
+                // console.log(`mail jane se phle-----${orderResponse.data.data.amount}`);
+                // console.log("mail jane se phle -- ", orderResponse.data.data.amount)
+                sendPaymentSuccessEmail(response, orderResponse.data.data.amount, token);
+                //verifyPaymen
+                console.log(`verifyPayment hone se phle`);
                 verifyPayment({ ...response, courses }, token, navigate, dispatch);
+                console.log(`verifyPayment hone ke badge`);
             }
         }
         //miss hogya tha 
+        console.log(options, "marlo")
+
         const paymentObject = new window.Razorpay(options);
+        console.log(paymentObject, "objhect")
         paymentObject.open();
         paymentObject.on("payment.failed", function (response) {
             toast.error("oops, payment failed");
+            alert(response)
             console.log(response.error);
+            console.log("payment pr yaha ae")
         })
 
     }
@@ -84,6 +93,9 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
 
 async function sendPaymentSuccessEmail(response, amount, token) {
     try {
+
+        console.log(response);
+        console.log("send paymetn seuccessemail funtion")
         await apiConnector("POST", SEND_PAYMENT_SUCCESS_EMAIL_API, {
             orderId: response.razorpay_order_id,
             paymentId: response.razorpay_payment_id,

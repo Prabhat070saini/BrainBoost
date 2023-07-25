@@ -5,7 +5,7 @@ const userRouter = require("./routes/User");
 const profileRouter = require("./routes/Profiles");
 const paymentRouter = require("./routes/Payments");
 const courseRouter = require("./routes/Course");
-
+const contactUsRoute = require("./routes/Contact");
 
 require("dotenv").config();
 const database = require("./config/database");
@@ -42,6 +42,8 @@ app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/payment", paymentRouter);
 app.use("/api/v1/course", courseRouter);
+app.use("/api/v1/reach", contactUsRoute);
+// app.use("/api/v1/payment", paymentRoutes);
 
 
 app.get("/", (req, res) => {

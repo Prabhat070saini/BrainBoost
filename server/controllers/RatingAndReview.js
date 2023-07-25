@@ -14,7 +14,7 @@ exports.createRating = async (req, res) => {
         const courseDetails = await Course.findOne(
             {
                 _id: courseId,
-                studentsEnrolled: { $elemMatch: { $eq: userId } },
+                studentsEnroled: { $elemMatch: { $eq: userId } },
             });
 
         if (!courseDetails) {
@@ -31,7 +31,7 @@ exports.createRating = async (req, res) => {
         if (alreadyReviewed) {
             return res.status(403).json({
                 success: false,
-                message: 'Course is already reviewed by the user',
+                message: 'Course is already reviewed by the you',
             });
         }
         //create rating and review
@@ -45,7 +45,7 @@ exports.createRating = async (req, res) => {
         const updatedCourseDetails = await Course.findByIdAndUpdate({ _id: courseId },
             {
                 $push: {
-                    ratingAndReviews: ratingReview._id,
+                    ratingAndReview: ratingReview._id,
                 }
             },
             { new: true });
