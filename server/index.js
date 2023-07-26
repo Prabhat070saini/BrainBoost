@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(
     cors({
-        origin: 'https://brainboost-tkgp.onrender.com',
+        origin: 'https://brain-boost-xi.vercel.app',
         credential: true,
     })
 );
