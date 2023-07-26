@@ -4,8 +4,7 @@ import { apiConnector } from "../apiconnector";
 import rzpLogo from "../../assets/Logo/Logo-Small-Light.png"
 import { setPaymentLoading } from "../../slices/courseSlice";
 import { resetCart } from "../../slices/cartSlice";
-
-
+const Key_Rz = process.env.RAZORPAY_KEY
 const { COURSE_PAYMENT_API, COURSE_VERIFY_API, SEND_PAYMENT_SUCCESS_EMAIL_API } = studentEndpoints;
 
 function loadScript(src) {
@@ -48,7 +47,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
         console.log("PRINTING orderResponse", orderResponse);
         //options
         const options = {
-            key: "rzp_test_wXKbEjmQHUWbTq",
+            key: Key_Rz,
             currency: orderResponse.data.data.currency,
             amount: `${orderResponse.data.data.amount}`,
             order_id: orderResponse.data.data.id,
