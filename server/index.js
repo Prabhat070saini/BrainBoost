@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(
     cors({
-        origin: 'https://brain-boost-5f8ook2cy-prabhat070saini.vercel.app/',
+        origin: '*',
         credential: true,
     })
 );
