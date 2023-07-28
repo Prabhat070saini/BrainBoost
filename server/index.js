@@ -12,7 +12,7 @@ const database = require("./config/database");
 const cookieParser = require('cookie-parser')
 const cors = require("cors");
 const { cloudinaryConnect } = require("./config/cloudinary");
-const expressfileupload = require("express-fileupload");
+// const expressfileupload = require("express-fileupload");
 const fileUpload = require('express-fileupload');
 const PORT = process.env.PORT || 5000;
 
@@ -20,7 +20,8 @@ database.connect();
 
 // add middleware 
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
+// app.use(cors());
 app.use(
     cors({
         origin: '*',

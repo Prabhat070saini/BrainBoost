@@ -29,8 +29,8 @@ import CourseDetails from "./pages/CourseDetails";
 import ViewCourse from "./pages/ViewCourse";
 import VideoDetails from "./components/core/ViewCourse/VideoDetails";
 function App() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
   const { user } = useSelector((state) => state.profile)
   return (
     <div className="w-screen min-h-screen flex flex-col font-inter bg-richblack-900">
